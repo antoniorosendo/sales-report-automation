@@ -1,0 +1,14 @@
+#Não subir
+.env
+
+#Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+#Editor / sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
