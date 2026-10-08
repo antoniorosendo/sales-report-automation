@@ -1,4 +1,4 @@
-# Email Automation Python
+# Sales Report Automation (Python + Email)
 
 Script em Python que lê uma lista de contatos em uma planilha Excel e envia um e-mail personalizado, com anexo, para cada pessoa da lista.
 
