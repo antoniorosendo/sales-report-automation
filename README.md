@@ -7,10 +7,12 @@ O projeto nasceu de um caso prático: enviar o painel de vendas de uma papelaria
 ## Funcionalidades
 
 - Lê nome, e-mail e setor de uma planilha `.xlsx` com `openpyxl`.
+- Janela para escolher o setor que vai receber o e-mail (ou todos).
 - Envia uma mensagem personalizada para cada contato (nome e setor aparecem no texto).
 - Anexa um arquivo (o painel de vendas em Excel).
 - Usa uma única conexão com o Gmail para todos os envios.
 - Se um envio falhar, continua para o próximo e mostra no final quem falhou.
+- Registra cada envio (nome, e-mail, data/hora e status) em uma aba `Registros` da própria planilha.
 - Guarda a senha fora do código, em um arquivo `.env`.
 
 ## Tecnologias
@@ -19,6 +21,8 @@ O projeto nasceu de um caso prático: enviar o painel de vendas de uma papelaria
 - [openpyxl](https://openpyxl.readthedocs.io/): leitura e criação de planilhas
 - `smtplib` e `email` (biblioteca padrão): envio de e-mails
 - [python-dotenv](https://pypi.org/project/python-dotenv/): leitura de variáveis do arquivo `.env`
+- `datetime` (biblioteca padrão): coletar data e hora dos envios
+- `tkinter` (biblioteca padrão): janela para escolher o setor
 
 ## Estrutura do projeto
 
@@ -100,6 +104,12 @@ Exemplo de saída:
 Enviado para Ana Souza <ana.souza@example.com>
 ...
 Concluído: 8 enviados, 0 falhas.
+
+Cada envio é anotado na aba **Registros** do `funcionarios.xlsx`:
+
+| Nome | Email | Data | Status |
+|---|---|---|---|
+| Ana Souza | ana.souza@example.com | 08/10/2026 14:30:05 | Enviado com sucesso |
 ```
 
 ## Observações
@@ -113,6 +123,10 @@ Concluído: 8 enviados, 0 falhas.
 - Nunca coloque a senha direto no código.
 - Nunca faça commit do `.env`.
 - Se a senha de app vazar, revogue em **Conta Google → Segurança → Senhas de app** e gere outra.
+
+## Próximos passos
+
+- [ ] Relatório automático: ler os dados de vendas, calcular totais e indicadores (melhor mês, melhor produto), gerar uma planilha de resumo e enviar por e-mail com os números no texto.
 
 ## Autor
 
