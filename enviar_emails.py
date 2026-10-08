@@ -2,6 +2,7 @@ import os
 import smtplib
 import time
 import mimetypes
+from datetime import datetime
 from email.message import EmailMessage
 
 from openpyxl import load_workbook
@@ -62,6 +63,14 @@ def main():
 
     enviados, falhas = 0, []
 
+    planilha = load_workbook(PLANILHA_FUNCIONARIOS)
+
+    if "Registros" in planilha.sheetnames:
+        aba_registro = planilha["Registros"]
+    else:
+        aba_registro = planilha.create_sheet("Registros")
+        aba_registro.append(["Nome", "Email", "Data", "Status"])
+
     #Conexão única para todos os envios
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as servidor:
         servidor.login(REMETENTE, SENHA)
@@ -71,10 +80,17 @@ def main():
                 servidor.send_message(montar_email(funcionario))
                 enviados += 1
                 print(f"Enviado para {funcionario['nome']} <{funcionario['email']}>")
+                status = 'Enviado com sucesso'
             except Exception as erro:
                 falhas.append(funcionario["email"])
                 print(f"✘ Falha com {funcionario['email']}: {erro}")
+                status = 'Falha no envio'
+
+            data = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            aba_registro.append([funcionario['nome'], funcionario['email'], data, status])
             time.sleep(PAUSA_ENTRE_ENVIOS)
+
+    planilha.save(PLANILHA_FUNCIONARIOS)
 
     print(f"\nConcluído: {enviados} enviados, {len(falhas)} falhas.")
     if falhas:
